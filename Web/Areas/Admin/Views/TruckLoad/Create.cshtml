@@ -1,0 +1,322 @@
+﻿@model LMYFrameWorkMVC.Common.Models.Modules.Admin.Truck.Load.TruckLoadModel
+
+@{
+    ViewBag.Title = Resources.SiteMapLocalizations.Create + " " + Resources.SiteMapLocalizations.TruckLoad;
+    ViewBag.modalID = Guid.NewGuid().ToString();
+    ViewBag.Width = "80%";
+    Layout = "~/Areas/Admin/Views/Shared/_ModalLayout.cshtml";
+}
+<div id="subAlertsContainer">
+    @Html.Partial("~/Areas/Admin/Views/Shared/_Alerts.cshtml", Model)
+</div>
+
+<div data-hassuccess="@Json.Encode(@Model.HasSuccess(LMYFrameWorkMVC.Common.LookUps.SuccessType.Full))" data-hidemodal="false"></div>
+
+@if (!Model.HasErrorByType(LMYFrameWorkMVC.Common.LookUps.ErrorType.Critical))
+{
+    <div class="row" id="subContainer">
+
+        <div class="col-md-12">
+            <div class="portlet light bordered">
+                @*<div class="portlet-title">
+                        <div class="caption font-dark">
+
+                            <span class="caption-subject bold uppercase">@Resources.Resources.Create</span>
+                        </div>
+
+                        <div>
+                            <div class="btn-group pull-right tools" id="#tools">
+
+
+                            </div>
+                        </div>
+                    </div>*@
+                <div class="portlet-body">
+
+                    @using (Html.BeginForm(null, null, new { }, FormMethod.Post, new { data_ajaxSubmit = "true" }))
+                {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Id)
+
+                        <div class="form-horizontal">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TruckId, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.HiddenFor(model => model.TruckModel.Name, new { @data_disableValidation = "true" })
+                                        @Html.DropDownListFor(model => model.TruckId, Enumerable.Empty<SelectListItem>(), " ",
+                                           htmlAttributes: new
+                                           {
+                                               @class = "form-control select2",
+                                               @data_url = Url.Action("TruckLoadCreate-GetTrucksBySelect2Parameters", "Truck"),
+                                               @data_container = "#subContainer",
+                                               @data_alertsContainer = "#subAlertsContainer",
+                                               @data_val_prop = "Id",
+                                               @data_text_prop = "Name",
+                                               @data_selected_text = Model.TruckModel.Name,
+                                               @data_selected_val = Model.TruckId,
+                                               @data_save_text_in = Html.IdFor(model => model.TruckModel.Name),
+                                           })
+
+                                        @Html.ValidationMessageFor(model => model.TruckId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.DriverId, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.HiddenFor(model => model.DriverModel.Name, new { @data_disableValidation = "true" })
+                                        @Html.DropDownListFor(model => model.DriverId, Enumerable.Empty<SelectListItem>(), " ",
+                                           htmlAttributes: new
+                                           {
+                                               @class = "form-control select2",
+                                               @data_url = Url.Action("TruckLoadCreate-GetDriversBySelect2Parameters", "Driver"),
+                                               @data_container = "#subContainer",
+                                               @data_alertsContainer = "#subAlertsContainer",
+                                               @data_val_prop = "Id",
+                                               @data_text_prop = "Name",
+                                               @data_selected_text = Model.DriverModel.Name,
+                                               @data_selected_val = Model.DriverId,
+                                               @data_save_text_in = Html.IdFor(model => model.DriverModel.Name),
+                                           })
+
+                                        @Html.ValidationMessageFor(model => model.DriverId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyId, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.HiddenFor(model => model.CompanyModel.Name, new { @data_disableValidation = "true" })
+                                        @Html.DropDownListFor(model => model.CompanyId, Enumerable.Empty<SelectListItem>(), " ",
+                                           htmlAttributes: new
+                                           {
+                                               @class = "form-control select2",
+                                               @data_url = Url.Action("TruckLoadCreate-GetCompaniesBySelect2Parameters", "Company"),
+                                               @data_container = "#subContainer",
+                                               @data_alertsContainer = "#subAlertsContainer",
+                                               @data_val_prop = "Id",
+                                               @data_text_prop = "Name",
+                                               @data_selected_text = Model.CompanyModel.Name,
+                                               @data_selected_val = Model.CompanyId,
+                                               @data_save_text_in = Html.IdFor(model => model.CompanyModel.Name),
+                                           })
+
+                                        @Html.ValidationMessageFor(model => model.CompanyId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.StatusId, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.DropDownListFor(model => model.StatusId, Model.StatusesList, "", htmlAttributes: new { @class = "form-control select2" })
+                                        @Html.ValidationMessageFor(model => model.StatusId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FromStateId, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.DropDownListFor(model => model.FromStateId, Model.StatesList, "", htmlAttributes: new { @class = "form-control select2" })
+                                        @Html.ValidationMessageFor(model => model.FromStateId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ToStateId, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.DropDownListFor(model => model.ToStateId, Model.StatesList, "", htmlAttributes: new { @class = "form-control select2" })
+                                        @Html.ValidationMessageFor(model => model.ToStateId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FromNotes, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextAreaFor(model => model.FromNotes, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.FromNotes, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ToNotes, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextAreaFor(model => model.ToNotes, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.ToNotes, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextAreaFor(model => model.Notes, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(model => model.Price, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.PricePerMile, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(model => model.PricePerMile, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.PricePerMile, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FromDateString, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(model => model.FromDateString, htmlAttributes: new { @class = "form-control datePicker" })
+                                        @Html.ValidationMessageFor(model => model.FromDateString, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ToDateString, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(model => model.ToDateString, htmlAttributes: new { @class = "form-control datePicker" })
+                                        @Html.ValidationMessageFor(model => model.ToDateString, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FuelCost, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(model => model.FuelCost, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.FuelCost, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.DriverPerMileCost, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(model => model.DriverPerMileCost, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.DriverPerMileCost, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.DriverCost, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(model => model.DriverCost, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.DriverCost, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.OtherCosts, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(model => model.OtherCosts, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.OtherCosts, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.OtherCostsNotes, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextAreaFor(model => model.OtherCostsNotes, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.OtherCostsNotes, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TotalIncome, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(model => model.TotalIncome, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.TotalIncome, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TotalCosts, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(model => model.TotalCosts, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.TotalCosts, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TotalProfit, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(model => model.TotalProfit, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.TotalProfit, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="col-md-12">
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resources.Close</button>
+                                        <input type="submit" value="@Resources.Resources.Save" class="btn btn-info" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var priceElement = $('#@Html.IdFor(m => m.Price)','#subContainer');
+            var fuelCostElement = $('#@Html.IdFor(m => m.FuelCost)', '#subContainer');
+            var driverCostElement = $('#@Html.IdFor(m => m.DriverCost)', '#subContainer');
+            var otherCostsElement = $('#@Html.IdFor(m => m.OtherCosts)', '#subContainer');
+            var totalCostsElement = $('#@Html.IdFor(m => m.TotalCosts)', '#subContainer');
+            var totalIncomeElement = $('#@Html.IdFor(m => m.TotalIncome)', '#subContainer');
+            var totalProfitElement = $('#@Html.IdFor(m => m.TotalProfit)', '#subContainer');
+
+            function setCostAndProfit() {
+                //set costs
+                if (!isNaN(fuelCostElement.val()) && !isNaN(driverCostElement.val()) && !isNaN(otherCostsElement.val())) {
+                    totalCostsElement.val(Number(fuelCostElement.val()) + Number(driverCostElement.val()) + Number(otherCostsElement.val()));
+                } else {
+                    totalCostsElement.val('');
+                }
+
+                //set income
+                if (!isNaN(priceElement.val())) {
+                    totalIncomeElement.val(priceElement.val());
+                } else {
+                    totalIncomeElement.val('');
+                }
+
+                //set profit
+                if (!isNaN(totalIncomeElement.val()) && !isNaN(totalCostsElement.val())) {
+                    totalProfitElement.val(Number(totalIncomeElement.val()) - Number(totalCostsElement.val()));
+                } else {
+                    totalProfitElement.val('');
+                }
+            }
+
+            priceElement.keyup(setCostAndProfit);
+            fuelCostElement.keyup(setCostAndProfit);
+            driverCostElement.keyup(setCostAndProfit);
+            otherCostsElement.keyup(setCostAndProfit);
+
+            //or you can use ajax so on change event do ajax call to get truck driver
+            var select2Wrapper = new LMYFrameWork.Select2Wrapper();
+            $('#@Html.IdFor(m => m.TruckId)', '#subContainer').on('lmyFrameWork.select', function (event, parameters) {
+                if (parameters.data.DriverModel.Id) {
+                    select2Wrapper.setSelectedValue($('#@Html.IdFor(m => m.DriverId)', '#subContainer'), '#subContainer', parameters.data.DriverModel.Id, parameters.data.DriverModel.Name);
+                }
+            });
+        });
+    </script>
+}

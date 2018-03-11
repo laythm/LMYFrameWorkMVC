@@ -1,0 +1,28 @@
+﻿@model  MvcSiteMapProvider.ISiteMapNode
+
+@if (Model != null && Model.IsInCurrentPath())
+{
+    <li>
+        <i class="@LMYFrameWorkMVC.Web.CommonCode.SiteMapHelper.Class(Model)"></i>
+        @if (Model.Clickable)
+        {
+            if (LMYFrameWorkMVC.Web.CommonCode.SiteMapHelper.IsCurrentNode(Model))
+            {
+                @Html.ActionLink(Model.Title, Model.Action, HttpContext.Current.Request.RequestContext.RouteData.Values)
+            }
+            else
+            {
+                @Html.ActionLink(Model.Title, Model.Action)
+            }
+        }
+        else
+        {
+            @Html.DisplayFor(m => Model.Title)
+        }
+    </li>
+
+    foreach (MvcSiteMapProvider.ISiteMapNode node in Model.ChildNodes.Where(x => x.IsInCurrentPath()))
+    {
+        @Html.Partial("~/Areas/Common/Views/Shared/_BreadCrumb_Sub.cshtml", node)
+    }
+}

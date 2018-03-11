@@ -1,0 +1,461 @@
+﻿@model LMYFrameWorkMVC.Common.Models.Common.BaseModel
+@using LMYFrameWorkMVC.Common.Models.Modules.Admin.Administration.User
+@using LMYFrameWorkMVC.Web.CommonCode
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div id="alertsContainer">
+    @Html.Partial("~/Areas/Admin/Views/Shared/_Alerts.cshtml", Model)
+</div>
+
+<div class="col-md-12" id="container">
+    <!-- BEGIN PORTLET-->
+    <div class="col-md-4">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-bubble font-hide hide"></i>
+                    <span class="caption-subject font-hide bold uppercase">@Resources.Resources.Users</span>
+                </div>
+                <div class="actions">
+                    <div class="btn-group pull-right" id="tools">
+                        @if (User.HasAccessToNode(Url.Action("Create", "Message")))
+                        {
+                            <a id="sendMessageModal" data-modal="" data-modalcontainer="#container" data-alertsContainer='#alertsContainer' class="dt-button btn blue btn-outline" href="@Url.Action("Create","Message")">@Resources.Resources.SendNewMessage</a>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div id="usersMessages" data-paging-massegescount="10" data-paging-page="1" style="height:383px;overflow :auto;overflow-x: hidden;" class="general-item-list">
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-bubble font-red-sunglo"></i>
+                    <span class="caption-subject font-red-sunglo bold uppercase">@Resources.Resources.Messages</span>
+                </div>
+                <div class="actions">
+                    <div class="btn-group pull-right" id="tools">
+                        <label id="user" data-userid=""> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body" id="messagesBody">
+                <div>
+
+                    <ul class="chats" id="messagesUl" style="height:333px;overflow :auto;overflow-x: hidden;"></ul>
+
+                    <div class="chat-form" id="sendBtnDiv">
+                        <div class="input-cont">
+                            <input class="form-control" type="text" id="messageText" placeholder="Type a message here..." />
+                        </div>
+                        <div class="btn-cont">
+                            <span class="arrow"> </span>
+                            <a href="javascript:void(0);" id="sendMessage" class="btn blue icn-only">
+                                <i class="fa fa-check icon-white"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section FooterJS{
+    <script type="text/javascript">
+        var blockUiWrapper;
+        var slimScrollWrapper;
+        var ajaxWrapper;
+        $(document).ready(function () {
+            initUsersDivClickEvent();
+            initSendMessageEvents();
+            initSendMessageModalSuccessEvent();
+            InitRecieveMessages();
+            InitReadMessageUpdated();
+            InitMessageSentSuccessfully();
+            InitMessageSetAsReadSuccessfully();
+            InitConnectionChanged();
+            blockUiWrapper = new LMYFrameWork.BlockUiWrapper();
+            slimScrollWrapper = new LMYFrameWork.SlimScrollWrapper();
+            ajaxWrapper = new LMYFrameWork.AjaxWrapper;
+            //initMessagesUlPager();
+        });
+
+
+        function updateUserMessages(data) {
+            var userItemExists = false;
+            var date = LMYFrameWork.DateHelper.getStringFromDate(LMYFrameWork.DateHelper.getDateFromJsonDate(data.CreatedAt), LMYFrameWork.Constants.FullDateFormat);
+
+            $('#usersMessages .item').each(function () {
+                var userId = $(this).attr('data-userid');
+                item = $(this);
+                //if this message to or from this item then change the message and move it to top
+                if (userId == data.FromUserModel.Id || userId == data.ToUserModel.Id) {
+                    userItemExists = true;
+
+                    if ($(item).attr('data-messageid') == data.ID)
+                        return;
+
+                    $(item).attr('data-messageid', data.ID);
+
+                    $(item).find('.item-body').each(function () {
+                        $(this).html(data.MessageText);
+                    });
+                    $(item).find('.item-label').each(function () {
+                        $(this).html(date);
+                    });
+
+                    //if message is not from me and current user did not read it
+                    if (data.NotFromMeAndNotRead) {
+                        $(item).addClass('bg-grey-steel');
+                    }
+
+                    var newItem = $(item)[0].outerHTML;
+
+                    $('#usersMessages').prepend(newItem);
+
+                    $(item).remove();
+                }
+            });
+
+            //if message item with the other user does not exists then append it
+            if (userItemExists == false) {
+                var itemUserId, itemUserName, user, isOnline;
+                if (data.IsFromMe) {
+                    itemUserId = data.ToUserID;
+                    itemUserName = data.ToUserModel.Name;
+                    user = data.ToUserModel;
+                    isOnline = data.ToUserModel.IsOnline;
+                } else {
+                    itemUserId = data.FromUserID;
+                    itemUserName = data.FromUserModel.Name;
+                    user = data.FromUserModel;
+                    isOnline = data.FromUserModel.IsOnline;
+                }
+
+                var newItem =
+                '<div class="item hoverable ' + (data.NotFromMeAndNotRead ? 'bg-grey-steel' : '') + '" data-messageid="' + data.ID + '" data-userid="' + itemUserId + '" data-user="' + LMYFrameWork.JSONHelper.stringifiyJSON(user) + '">' +
+                '<div class="item-head">' +
+                    '<div class="item-details">' +
+                        '<span class="item-status">' +
+                            '<span class="userStatus badge badge-empty margin-5-right ' + (isOnline ? "badge-success" : " ") + '" data-userid="' + itemUserId + '" ></span>' +
+                        '</span>' +
+                    '<a href="javascript:void(0)" class="item-name primary-link" > ' + itemUserName + '</a>' +
+                    '<span class="item-label"> ' + date + '</span>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="item-body"> ' + data.MessageText + ' </div>' +
+            '</div>'
+
+                $('#usersMessages').prepend(newItem);
+            }
+
+            initUsersDivClickEvent();
+            updateUsersUlScroller();
+        }
+
+        //render specific message
+        function renderChatMessage(data, append, reorderUsersItems, updateMessagesUlscrollerPos) {
+            var userID = $('#user').attr('data-userid');
+            // if the message is for selected(open chat) of the other user then append it to messagesUl
+            //other wise just reorder usersMessages
+            if (data.FromUserID == userID || data.ToUserID == userID) {
+                var messageElement = '';
+                var date = LMYFrameWork.DateHelper.getStringFromDate(LMYFrameWork.DateHelper.getDateFromJsonDate(data.CreatedAt), LMYFrameWork.Constants.FullDateFormat);
+                if (data.IsFromMe) {
+                    messageElement = '<li class="out" data-messageid="' + data.ID + '">' +
+                      '<div class="message">' +
+                          '<span class="arrow"> </span>' +
+                          '<a href="javascript:void(0)" class="name"> ' + data.FromUserModel.Name + ' </a>' +
+                          '<span class="datetime">  ' + date + ' </span>' +
+                           '<span class="body">' + data.MessageText +
+                           '<span class="pull-left ' + (data.Read ? '' : ' readicon hidden') + '"><i class="fa fa-check font-green">  </i></span>'
+
+                    '</span>' +
+               '</div>' +
+             '</li>';
+                } else {
+                    messageElement = '<li class="in " data-messageid="' + data.ID + '">' +
+                      '<div class="message">' +
+                          '<span class="arrow"> </span>' +
+                          '<a href="javascript:void(0)" class="name"> ' + data.FromUserModel.Name + ' </a>' +
+                          '<span class="datetime"> ' + date + ' </span>' +
+                          '<span class="body"> ' + data.MessageText + ' </span>' +
+                      '</div>' +
+                  '</li>';
+
+                }
+                if (append)
+                    $('#messagesUl').append(messageElement);
+                else
+                    $('#messagesUl').prepend(messageElement);
+
+                $('#messagesUl .addMore').remove();
+                $('#messagesUl').prepend('<li class="addMore text-center"> <a href="javascript:void(0);"> ' + "@Resources.Resources.LoadMore" + '  </a> </li>');
+
+                $(".addMore a").click(function () {
+                    renderChatMessages(false, false, false, false);
+                });
+            }
+
+            if (reorderUsersItems) {
+                updateUserMessages(data);
+            }
+
+            //if (!(data.NotFromMeAndNotRead && ))
+            //change the read status only if it is not read and they user has shown div
+            //update the scroller only if the scroller is down at bottom and the message is from the other user
+            //if this did not passed then that mean the user does not want to update the sceroller
+            if (updateMessagesUlscrollerPos)
+                updateMessagesUlScroller(updateMessagesUlscrollerPos);
+
+            if (data.NotFromMeAndNotRead)//(data.NotFromMeAndNotRead)
+                initChangeReadMessageStatus($('#messagesUl li[data-messageid="' + data.ID + '"]'));
+        }
+
+        function initChangeReadMessageStatus(el, userItem) {
+            $('#messagesUl').scroll(function () {
+                var $ul = $(this);
+
+                $ul.find(el).each(function (n) {
+
+                    var $this = $(this);
+
+                    if ($this.position().top + $this.height() + 10 > 0 && $this.position().top < $ul.height() && $this.attr('data-shown') != 'true') {
+                        $this.attr('data-shown', 'true');
+                        var messageID = $(el).attr('data-messageid');
+
+                        LMYFrameWork.SignalRWrapper.setMessageAsRead(messageID, {
+                            successCallBack: function () {
+                                $(userItem).removeClass('bg-grey-steel')
+                            },
+                            errorCallBack: '',
+                            alertsContainer: '#alertsContainer'
+                        });
+                    }
+                });
+            }).scroll();
+        }
+
+        function sendMessage(messgeText, userID) {
+            if (!LMYFrameWork.EmptyHelper.isNullOrEmpty(messgeText) && !LMYFrameWork.EmptyHelper.isNullOrEmpty(userID)) {
+                blockUiWrapper.blockUI({
+                    target: '#sendBtnDiv',
+                    animate: true
+                });
+                $('#messageText').blur();
+
+                LMYFrameWork.SignalRWrapper.sendMessage(userID, messgeText, {
+                    successCallBack: function (messageModel) {
+                        blockUiWrapper.unblockUI('#sendBtnDiv');
+                        $('#messageText').focus();
+                    },
+                    errorCallBack: function () {
+                        blockUiWrapper.unblockUI('#sendBtnDiv');
+                        $('messageText').focus();
+                    },
+                    alertsContainer: "#alertsContainer"
+                });
+            }
+        }
+
+        function InitRecieveMessages() {
+            LMYFrameWork.SignalRWrapper.addCallBackToRecieveMessage(function (messageModel) {
+                //when message Recieve update the scroller only if it was att bottom
+
+                if ($('#messagesUl')[0].scrollHeight == $('#messagesUl').scrollTop() + $('#messagesUl').height())
+                    renderChatMessage(messageModel, true, true, 'bottom');
+                else
+                    renderChatMessage(messageModel, true, true, false);
+            });
+        }
+
+        //to show if my messages read
+        function InitReadMessageUpdated() {
+            LMYFrameWork.SignalRWrapper.addCallBackToReadMessageUpdated(function (id) {
+                //when message Recieve update the scroller only if it was att bottom
+
+                $('#messagesUl').find('[data-messageid="' + id + '"]').find('.readicon').removeClass('hidden');
+            });
+        }
+
+        function InitMessageSentSuccessfully() {
+            LMYFrameWork.SignalRWrapper.addCallBackToMessageSentSuccessfully(function (messageModel) {
+                if (messageModel)
+                    renderChatMessage(messageModel, true, true, 'bottom');
+            });
+        }
+
+        function InitMessageSetAsReadSuccessfully() {
+            LMYFrameWork.SignalRWrapper.addCallBackToMessageSetAsReadSuccessfully(function (messageId) {
+                //to be used in future maybe green it as you see this message
+                $('#usersMessages .item[data-messageid="' + messageId + '"]').removeClass('bg-grey-steel');
+            });
+        }
+
+        function initSendMessageModalSuccessEvent() {
+            $('#sendMessageModal').on('success', function (event, message) {
+                sendMessage(message.successData.MessageText, message.successData.ToUserID);
+                //renderChatMessage(message.successData, true, true, 'bottom');
+            });
+        }
+
+        function renderUsersMessages() {
+            $('#usersMessages').empty();
+
+            ajaxWrapper.get({
+                alertsContainer: "#alertsContainer",
+                container: '#usersMessages',
+                url: '@Url.Action("ListUsersWithLastMessageByCurrentUser", "Message")',
+                data: {},
+                successCallBack: function (listUsersWithLastMessageByCurrentUserData) {
+                    for (i = 0; i < listUsersWithLastMessageByCurrentUserData.baseModel.List.length; i++) {
+                        var userModel = listUsersWithLastMessageByCurrentUserData.baseModel.List[i];
+                        var item =
+                            '<div class="item hoverable ' + (userModel.LastMessageModel.NotFromMeAndNotRead ? "bg-grey-steel" : "") + '" data-userid="' + userModel.Id + '" data-messageid="' + userModel.LastMessageModel.ID + '" data-user="' + LMYFrameWork.JSONHelper.stringifiyJSON(userModel) + '">' +
+                                '<div class="item-head">' +
+                                    '<div class="item-details">' +
+                                        '<span class="item-status">' +
+                                             '<span class="userStatus badge badge-empty margin-5-right ' + (userModel.IsOnline ? "badge-success" : " ") + '" data-userid="' + userModel.Id + '"></span>' +
+                                        '</span>' +
+                                        '<a href="javascript:void(0)" class="item-name primary-link">' + userModel.Name + '</a>' +
+                                        '<span class="item-label">' + LMYFrameWork.DateHelper.getStringFromDate(LMYFrameWork.DateHelper.getDateFromJsonDate(userModel.LastMessageModel.CreatedAt), LMYFrameWork.Constants.FullDateFormat) + '</span>' +
+                                    '</div>' +
+                                '</div>' +
+                                '<div class="item-body"> ' + userModel.LastMessageModel.MessageText + '</div>' +
+                          '</div>';
+                        $('#usersMessages').append(item);
+                    }
+
+                    initUsersDivClickEvent();
+                    updateUsersUlScroller();
+                }
+            });
+        }
+
+        //render messages between two users
+        function renderChatMessages(append, reorderUsersItems, updateMessagesUlScroller, clearMessagesUl) {
+            var userID = $('#user').attr('data-userid');
+            if (userID) {
+                if (clearMessagesUl) {
+                    $('#messagesUl').empty();
+                    //$('#messagesUl').attr('data-totalCount', 0);
+                    $('#messagesUl').removeAttr('data-page');
+                    $('#messagesUl').removeAttr('data-maxavailablescrollheightpos');
+                }
+
+                var page = $('#messagesUl').attr('data-page') ? $('#messagesUl').attr('data-page') : 1;
+                var pageSize = 10;
+
+                ajaxWrapper.get({
+                    alertsContainer: LMYFrameWork.Constants.alertsContainer,
+                    container: "#messagesBody",
+                    url: '@Url.Action("GetMyMessagesByOtherUser", "Message")',
+                    data: { userID: userID, page: page, pageSize: pageSize },
+                    successCallBack: function (getMyMessagesByOtherUserData) {
+                        var currentScrollHeight = $('#messagesUl')[0].scrollHeight;
+
+                        for (i = 0; i < getMyMessagesByOtherUserData.baseModel.List.length; i++) {
+                            var updateMessagesUlScrollerPos = 'bottom';
+                            if (!updateMessagesUlScroller)
+                                updateMessagesUlScrollerPos = $('#messagesUl').attr('data-maxavailablescrollheightpos');
+
+                            renderChatMessage(getMyMessagesByOtherUserData.baseModel.List[i], append, reorderUsersItems, updateMessagesUlScrollerPos);
+                        }
+
+                        var afterAppendScrollHeight = $('#messagesUl')[0].scrollHeight;
+
+                        //$('#messagesUl').attr('data-totalCount', data.Total);
+                        $('#messagesUl').attr('data-page', parseInt(page) + 1);
+                        $('#messagesUl').attr('data-maxavailablescrollheightpos', afterAppendScrollHeight - currentScrollHeight);
+                    }
+                });
+            }
+        }
+
+        function initUsersDivClickEvent() {
+            $('[data-user]').unbind('click');
+            $('[data-user]').click(function () {
+                $(this).removeClass('bg-grey-steel');
+                var user = LMYFrameWork.JSONHelper.parseJSON(this.getAttribute('data-user'));
+                $('#user').attr('data-userid', user.Id);
+                $('#user').html(user.Name);
+
+                renderChatMessages(false, false, true, true);
+            });
+        }
+
+        //function initMessagesUlPager() {
+        //    $('#messagesUl').unbind('scroll');
+        //    $('#messagesUl').scroll(function (event, pos) {
+        //        // if ($('#messagesUl').scrollTop() < $('#messagesUl')[0].scrollHeight * 06 && $('#messagesUl').scrollTop() > $('#messagesUl')[0].scrollHeight * 05) {
+        //        if ($('#messagesUl').scrollTop() > 0 && $('#messagesUl').scrollTop() < 10) {
+        //            renderChatMessages(false, false, false, false);
+        //        }
+        //        console.log($('#messagesUl').scrollTop());
+        //    });
+        //}
+
+        function initSendMessageEvents() {
+            $('#sendMessage').click(function () {
+                var messgeText = $('#messageText').val();
+                $('#messageText').val('');
+                var userID = $('#user').attr('data-userid');
+
+                sendMessage(messgeText, userID);
+            });
+
+            $('#messageText').keyup(function (e) {
+                if (e.keyCode == 13) {
+                    var messgeText = $('#messageText').val();
+                    $('#messageText').val('');
+                    var userID = $('#user').attr('data-userid');
+                    sendMessage(messgeText, userID);
+                }
+            });
+        }
+
+        function updateMessagesUlScroller(pos) {
+            slimScrollWrapper.scrollElemntTo('#messagesUl', pos);
+        }
+
+        function updateUsersUlScroller() {
+            slimScrollWrapper.scrollElemntTo('#usersMessages', 'start');
+        }
+
+        var disconnectDate = '';
+
+        function InitConnectionChanged() {
+            LMYFrameWork.SignalRWrapper.addCallBackToConnectionStatusChanged(function (isConnected) {
+                if (!isConnected) {
+                    disconnectDate = LMYFrameWork.DateHelper.getCurrentDate(disconnectDate);
+
+                    blockUiWrapper.blockUI({
+                        target: '#container',
+                        animate: true
+                    });
+                }
+                else {
+                    blockUiWrapper.unblockUI('#container');
+
+                    renderUsersMessages();
+                    renderChatMessages(false, false, 'bottom', true);
+                }
+            });
+        }
+
+    </script>
+}

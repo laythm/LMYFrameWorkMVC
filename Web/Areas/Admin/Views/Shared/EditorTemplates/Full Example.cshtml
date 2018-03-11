@@ -1,0 +1,316 @@
+﻿@model  List<AdigaXasa.Common.Models.Modules.Contact.ContactWorkHistoryModel>
+
+@{
+    //0 is reserved for the template
+    Model.Insert(0, new AdigaXasa.Common.Models.Modules.Contact.ContactWorkHistoryModel());
+}
+
+<script type="text/javascript">
+    var countWorkHistory =@Model.Count -1;
+
+    function addWorkHistoryTemplate(container, existsFields) {
+        countWorkHistory++;
+
+        var newCountName = "[" + countWorkHistory + "]";
+        var newCountID = "_" + countWorkHistory + "_";
+
+        var workInstitutionHiddenTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.HiddenFor(model => Model[0].WorkInstitutionModel.Name).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+        var workInstitutionControlTemplate =
+        '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.DropDownListFor(model => Model[0].WorkInstitutionID, Enumerable.Empty<SelectListItem>(), " ",
+        htmlAttributes: new
+        {
+            @class = "select2",
+            @placeholder = Resources.Resources.WorkInstitution,
+            @data_url = Url.Action("GetWorkInstitutionsBySelectParameters", "Common",new { Area="Common"}),
+            @data_val_prop = "WorkInstitutionID",
+            @data_text_prop = "Name",
+            @data_selected_text = Model[0].WorkInstitutionModel.Name,
+            @data_selected_val = Model[0].WorkInstitutionID,
+            @data_save_text_in = Html.IdFor(model => Model[0].WorkInstitutionModel.Name),
+        }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+        var workInstitutionValidatorTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.ValidationMessageFor(model => Model[0].WorkInstitutionID, "", new { @class = "parsley-required" }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+
+        var positionHiddenTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.HiddenFor(model => Model[0].PositionModel.Name).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+        var positionControlTemplate =
+        '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.DropDownListFor(model => Model[0].PositionID, Enumerable.Empty<SelectListItem>(), " ",
+        htmlAttributes: new
+        {
+            @class = "select2",
+            @placeholder = Resources.Resources.Position,
+            @data_url = Url.Action("GetPositionsBySelectParameters","Common", new { Area = "Common" }),
+            @data_val_prop = "PositionID",
+            @data_text_prop = "Name",
+            @data_selected_text = Model[0].PositionModel.Name,
+            @data_selected_val = Model[0].PositionID,
+            @data_save_text_in = Html.IdFor(model => Model[0].PositionModel.Name),
+        }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+        var positionValidatorTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.ValidationMessageFor(model => Model[0].PositionID, "", new { @class = "parsley-required" }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+
+        var workSectorHiddenTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.HiddenFor(model => Model[0].WorkSectorModel.Name).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+        var workSectorControlTemplate =
+        '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.DropDownListFor(model => Model[0].WorkSectorID, Enumerable.Empty<SelectListItem>(), " ",
+        htmlAttributes: new
+        {
+            @class = "select2",
+            @placeholder = Html.DisplayNameFor(model=>Model[0].WorkSectorID),
+            @data_url = Url.Action("GetWorkSectorsBySelectParameters", "Common", new { Area = "Common" }),
+            @data_val_prop = "WorkSectorID",
+            @data_text_prop = "Name",
+            @data_selected_text = Model[0].WorkSectorModel.Name,
+            @data_selected_val = Model[0].WorkSectorID,
+            @data_save_text_in = Html.IdFor(model => Model[0].WorkSectorModel.Name),
+        }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+        var workSectorValidatorTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.ValidationMessageFor(model => Model[0].WorkSectorID, "", new { @class = "parsley-required" }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+
+        var fromDateStringControlTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.TextBoxFor(model => Model[0].FromDateString, new { @placeholder = Html.DisplayNameFor(model=>Model[0].FromDateString), @class = "md-input label-fixed datePicker" }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+        var fromDateStringValidatorTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.ValidationMessageFor(model => Model[0].FromDateString, "", new { @class = "parsley-required" }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+
+        var toDateStringControlTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.TextBoxFor(model => Model[0].ToDateString, new { @placeholder = Html.DisplayNameFor(model=>Model[0].ToDateString), @class = "md-input label-fixed datePicker" }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+        var toDateStringValidatorTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.ValidationMessageFor(model => Model[0].ToDateString, "", new { @class = "parsley-required" }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+
+        var isActiveControlTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.CheckBoxFor(model => Model[0].IsActive, new { @data_switchery=true ,  @class = "md-input label-fixed" }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+        var isActiveLabelTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.LabelFor(model => Model[0].IsActive).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+        var isActiveValidatorTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.ValidationMessageFor(model => Model[0].IsActive, "", new { @class = "parsley-required" }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+
+        var isOwnerControlTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.CheckBoxFor(model => Model[0].IsOwner, new { @data_switchery=true ,  @class = "md-input label-fixed" }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+        var isOwnerLabelTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.LabelFor(model => Model[0].IsOwner).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+        var isOwnerValidatorTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.ValidationMessageFor(model => Model[0].IsOwner, "", new { @class = "parsley-required" }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+
+        var existsTemplate = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Html.HiddenFor(model => Model[0].Exists, new { Value = true }).ToHtmlString()))'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+
+        var actionsTemplate = '<button data-exists-element-id="@Html.IdFor(model => Model[0].Exists)" style="margin-top:6px" type="button" class="deleteWorkHistory uk-vertical-align-middle md-btn md-btn-danger md-btn-small"><i class="material-icons">delete</i></button>'.replaceAll('_0_', newCountID).replaceAll('[0]', newCountName);
+
+        var controlTempalte = '{Hidden} {Control} {Label} {Validator}'
+
+        var workInstitutionTemplate =
+        controlTempalte
+        .replaceAll('{Hidden}', workInstitutionHiddenTemplate)
+        .replaceAll('{Control}', workInstitutionControlTemplate)
+        .replaceAll('{Label}', '')
+        .replaceAll('{Validator}', workInstitutionValidatorTemplate);
+
+        var positionTemplate =
+        controlTempalte
+        .replaceAll('{Hidden}', positionHiddenTemplate)
+        .replaceAll('{Control}', positionControlTemplate)
+        .replaceAll('{Label}', '')
+        .replaceAll('{Validator}', positionValidatorTemplate);
+
+        var workSectorTemplate =
+        controlTempalte
+        .replaceAll('{Hidden}', workSectorHiddenTemplate)
+        .replaceAll('{Control}', workSectorControlTemplate)
+        .replaceAll('{Label}', '')
+        .replaceAll('{Validator}', workSectorValidatorTemplate);
+
+        var fromDateStringTemplate =
+        controlTempalte
+        .replaceAll('{Hidden}', '')
+        .replaceAll('{Control}', fromDateStringControlTemplate)
+        .replaceAll('{Label}', '')
+        .replaceAll('{Validator}', fromDateStringValidatorTemplate);
+
+        var toDateStringTemplate =
+        controlTempalte
+        .replaceAll('{Hidden}', '')
+        .replaceAll('{Control}', toDateStringControlTemplate)
+        .replaceAll('{Label}', '')
+        .replaceAll('{Validator}', toDateStringValidatorTemplate);
+
+        var isActiveTemplate =
+        controlTempalte
+        .replaceAll('{Hidden}', '')
+        .replaceAll('{Control}', isActiveControlTemplate)
+        .replaceAll('{Label}', isActiveLabelTemplate)
+        .replaceAll('{Validator}', isActiveValidatorTemplate);
+
+        var isOwnerTemplate =
+        controlTempalte
+        .replaceAll('{Hidden}', '')
+        .replaceAll('{Control}', isOwnerControlTemplate)
+        .replaceAll('{Label}', isOwnerLabelTemplate)
+        .replaceAll('{Validator}', isOwnerValidatorTemplate);
+
+        var htmlTemplate =
+            '<div class="md-card workHistory">' +
+                '<div class="md-card-content">' +
+                     '<div class="uk-grid uk-grid-divider" data-uk-grid-margin="">' +
+                     '<div class="uk-width-medium-8-10 ">' +
+                         '<div class="uk-grid">' +
+                             '<div class="uk-width-medium-2-6">{workInstitutionTemplate}</div>' +
+                             '<div class="uk-width-medium-2-6">{positionTemplate}</div>' +
+                             '<div class="uk-width-medium-2-6">{workSectorTemplate}</div>' +
+                             '<div class="uk-width-medium-2-6">{fromDateStringTemplate}</div>' +
+                             '<div class="uk-width-medium-2-6">{toDateStringTemplate}</div>' +
+                             '<div class="uk-width-medium-1-6 uk-text-center">{isActiveTemplate}</div>' +
+                             '<div class="uk-width-medium-1-6 uk-text-center">{isOwnerTemplate}</div>' +
+                          '</div>' +
+                     '</div>' +
+                     '<div class="uk-width-medium-2-10 uk-text-center uk-vertical-align">' +
+                         ' {ActionsTemplate}' +
+                    '</div>'
+        '</div>' +
+    '</div>';
+
+        htmlTemplate = htmlTemplate
+            .replaceAll('{workInstitutionTemplate}', workInstitutionTemplate)
+            .replaceAll('{positionTemplate}', positionTemplate)
+            .replaceAll('{workSectorTemplate}', workSectorTemplate)
+            .replaceAll('{fromDateStringTemplate}', fromDateStringTemplate)
+            .replaceAll('{toDateStringTemplate}', toDateStringTemplate)
+            .replaceAll('{isActiveTemplate}', isActiveTemplate)
+            .replaceAll('{isOwnerTemplate}', isOwnerTemplate)
+            .replaceAll('{ActionsTemplate}', actionsTemplate);
+
+        $(container).append(htmlTemplate);
+        $(existsFields).append(existsTemplate);
+
+        initWorkHistoryModels(container);
+    }
+
+    function initWorkHistoryModels(container) {
+        var commonWrapper = new LMYFrameWork.CommonWrapper();
+        commonWrapper.init(container);
+
+        $('.deleteWorkHistory', container).unbind('click.delete');
+        $('.deleteWorkHistory', container).on('click.delete', function () {
+            var existsElementid = $(this).attr('data-exists-element-id');
+            $('#' + existsElementid).val('false');
+            var tr = $(this).parents('.workHistory');
+            $(tr).remove();
+        });
+    }
+
+    $(document).ready(function () {
+        initWorkHistoryModels('#workHistorysContainer');
+
+        $('#addWorkHistory').click(function () {
+            addWorkHistoryTemplate('#workHistorysContainer', '#workHistoryExistsFields');
+        });
+    });
+</script>
+
+<h3 class="uk-vertical-align-middle full_width_in_card heading_c uk-width-medium-1-1 uk-margin-bottom" id="workHistorysHeaderContainer">
+
+    <button type="button" id="addWorkHistory" class="md-btn md-btn-success md-btn-small uk-float-right uk-margin-left uk-margin-right">
+        <i class="material-icons" data-uk-tooltip="{pos:'bottom'}">note_add</i>
+    </button>
+
+    <a class="md-btn md-btn-primary md-btn-small uk-float-right uk-margin-left uk-margin-right" title="@Resources.Resources.CreateWorkInstitution" data-uk-tooltip="" data-modal='' data-modalCotainer='@ViewBag.Container' data-alertsDivId='@ViewBag.AlertsDiv' href="@Url.Action("Create","WorkInstitution")">
+        <i class="material-icons">note_add</i>
+    </a>
+
+    <a class="md-btn md-btn-primary md-btn-small uk-float-right uk-margin-left uk-margin-right" title="@Resources.Resources.CreatePosition" data-uk-tooltip="" data-modal='' data-modalCotainer='@ViewBag.Container' data-alertsDivId='@ViewBag.AlertsDiv' href="@Url.Action("Create","Position")">
+        <i class="material-icons">note_add</i>
+    </a>
+
+    <a class="md-btn md-btn-primary md-btn-small uk-float-right uk-margin-left uk-margin-right" title="@Resources.Resources.CreateWorkSector" data-uk-tooltip="" data-modal='' data-modalCotainer='@ViewBag.Container' data-alertsDivId='@ViewBag.AlertsDiv' href="@Url.Action("Create","WorkSector")">
+        <i class="material-icons">note_add</i>
+    </a>
+
+    @Resources.Resources.WorkHistory
+</h3>
+
+<div id="workHistoryExistsFields" class="uk-hidden">
+    @Html.HiddenFor(model => Model[0].Exists, new { Value = false })
+    @for (int i = 1; i < Model.Count; i++)
+    {
+        @Html.HiddenFor(model => Model[i].Exists, new { Value = true })
+    }
+</div>
+
+<div id="workHistorysContainer" class="uk-margin-left uk-margin-right">
+    @for (int i = 1; i < Model.Count; i++)
+    {
+        <div class="md-card workHistory">
+            <div class="md-card-content">
+
+                <div class="uk-grid uk-grid-divider workHistory">
+                    <div class="uk-width-medium-8-10 uk-row-first">
+                        <div class="uk-grid">
+                            <div class="uk-width-medium-2-6 uk-row-first">
+                                @Html.HiddenFor(model => Model[i].WorkInstitutionModel.Name)
+                                @Html.DropDownListFor(model => Model[i].WorkInstitutionID, Enumerable.Empty<SelectListItem>(), " ",
+                            htmlAttributes: new
+                            {
+                                @class = "select2",
+                                @placeholder = Html.DisplayNameFor(model => Model[0].WorkInstitutionID),
+                                @data_url = Url.Action("GetWorkInstitutionsBySelectParameters", "Common", new { Area = "Common" }),
+                                @data_val_prop = "WorkInstitutionID",
+                                @data_text_prop = "Name",
+                                @data_selected_text = Model[i].WorkInstitutionModel.Name,
+                                @data_selected_val = Model[i].WorkInstitutionID,
+                                @data_save_text_in = Html.IdFor(model => Model[i].WorkInstitutionModel.Name),
+                            })
+                                @Html.ValidationMessageFor(model => Model[i].WorkInstitutionID, "", new { @class = "parsley-required" })
+                            </div>
+
+                            <div class="uk-width-medium-2-6">
+                                @Html.HiddenFor(model => Model[i].PositionModel.Name)
+                                @Html.DropDownListFor(model => Model[i].PositionID, Enumerable.Empty<SelectListItem>(), " ",
+                            htmlAttributes: new
+                            {
+                                @class = "select2",
+                                @placeholder = Html.DisplayNameFor(model => Model[0].PositionID),
+                                @data_url = Url.Action("GetPositionsBySelectParameters", "Common", new { Area = "Common" }),
+                                @data_val_prop = "PositionID",
+                                @data_text_prop = "Name",
+                                @data_selected_text = Model[i].PositionModel.Name,
+                                @data_selected_val = Model[i].PositionID,
+                                @data_save_text_in = Html.IdFor(model => Model[i].PositionModel.Name),
+                            })
+                                @Html.ValidationMessageFor(model => Model[i].PositionID, "", new { @class = "parsley-required" })
+                            </div>
+
+                            <div class="uk-width-medium-2-6">
+                                @Html.HiddenFor(model => Model[i].WorkSectorModel.Name)
+                                @Html.DropDownListFor(model => Model[i].WorkSectorID, Enumerable.Empty<SelectListItem>(), " ",
+                            htmlAttributes: new
+                            {
+                                @class = "select2",
+                                @placeholder = Html.DisplayNameFor(model => Model[0].WorkSectorID),
+                                @data_url = Url.Action("GetWorkSectorsBySelectParameters", "Common", new { Area = "Common" }),
+                                @data_val_prop = "WorkSectorID",
+                                @data_text_prop = "Name",
+                                @data_selected_text = Model[i].WorkSectorModel.Name,
+                                @data_selected_val = Model[i].WorkSectorID,
+                                @data_save_text_in = Html.IdFor(model => Model[i].WorkSectorModel.Name),
+                            })
+                                @Html.ValidationMessageFor(model => Model[i].WorkSectorID, "", new { @class = "parsley-required" })
+                            </div>
+
+                            <div class="uk-width-medium-2-6 uk-text-center">
+                                @Html.TextBoxFor(model => Model[i].FromDateString, new { @placeholder = Resources.Resources.Year, @class = "md-input label-fixed datePicker" })
+                                @Html.ValidationMessageFor(model => Model[i].FromDateString, "", new { @class = "parsley-required" })
+                            </div>
+
+                            <div class="uk-width-medium-2-6 uk-text-center">
+                                @Html.TextBoxFor(model => Model[i].ToDateString, new { @placeholder = Resources.Resources.Year, @class = "md-input label-fixed datePicker" })
+                                @Html.ValidationMessageFor(model => Model[i].ToDateString, "", new { @class = "parsley-required" })
+                            </div>
+
+                            <div class="uk-width-medium-1-6 uk-text-center ">
+                                @Html.CheckBoxFor(model => Model[i].IsActive, new { @data_switchery = true, @class = "md-input label-fixed" })
+                                @Html.LabelFor(model => Model[i].IsActive)
+                                @Html.ValidationMessageFor(model => Model[i].IsActive, "", new { @class = "parsley-required" })
+                            </div>
+
+                            <div class="uk-width-medium-1-6 uk-text-center">
+                                @Html.CheckBoxFor(model => Model[i].IsOwner, new { @data_switchery = true, @class = "md-input label-fixed" })
+                                @Html.LabelFor(model => Model[i].IsOwner)
+                                @Html.ValidationMessageFor(model => Model[i].IsOwner, "", new { @class = "parsley-required" })
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="uk-width-medium-2-10 uk-text-center uk-vertical-align">
+                        <button data-exists-element-id="@Html.IdFor(model=>Model[i].Exists)" style="margin-top:6px" type="button" class="deleteWorkHistory uk-vertical-align-middle md-btn md-btn-danger md-btn-small"><i class="material-icons">delete</i></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+

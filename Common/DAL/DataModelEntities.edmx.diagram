@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1c380e7efddf46a1a30077fb705fa366" Name="Diagram1" ZoomLevel="77">
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.AspNetRole" Width="1.5" PointX="5.75" PointY="8.5" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.AspNetRoleSiteMapNode" Width="1.5" PointX="8" PointY="15.875" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.AspNetUser_Connections" Width="1.5" PointX="10.25" PointY="1.625" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.AspNetUserClaim" Width="1.5" PointX="10.25" PointY="13.125" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.AspNetUserLogin" Width="1.5" PointX="10.25" PointY="10.625" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.AspNetUser" Width="1.5" PointX="8" PointY="5.5" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.Company" Width="1.5" PointX="0.75" PointY="18.5" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.DBAudit" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.Driver" Width="1.5" PointX="0.75" PointY="14.625" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.ELMAH_Error" Width="1.5" PointX="12.75" PointY="5.75" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.Message" Width="1.5" PointX="10.25" PointY="6.75" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.Setting" Width="1.5" PointX="15" PointY="1" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.SettingsFile" Width="1.5" PointX="17.25" PointY="1.625" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.SettingsType" Width="1.5" PointX="12.75" PointY="1.875" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.TruckExpens" Width="1.5" PointX="3" PointY="10.125" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.TruckExpensType" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.TruckLoad" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.TruckLoadStatus" Width="1.5" PointX="0.75" PointY="21.75" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.Truck" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="LMYFrameWorkMVCModel.USAState" Width="1.5" PointX="0.75" PointY="3.375" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_AspNETRole_NodesKeys_AspNetRoles" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_AspNetRole_NodesKeys_AspNetRole_NodesKeys" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_AspNetUser_Connections_AspNetUsers" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_Chat_Messages_FromAspNetUsers" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_Chat_Messages_ToAspNetUsers" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_TruckLoads_Companies" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_TruckLoads_Drivers" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_Trucks_Drivers" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_Settings_Files_Settings" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_Settings_Settings_Types" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_TruckExpenses_TruckExpenseType" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_TruckExpenses_Trucks" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_TruckLoads_TruckLoadStatuses" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_TruckLoads_Trucks" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_TruckLoads_USAStates" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.FK_TruckLoads_USAStates1" />
+        <AssociationConnector Association="LMYFrameWorkMVCModel.AspNetUserRoles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

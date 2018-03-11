@@ -1,0 +1,109 @@
+﻿@model LMYFrameWorkMVC.Common.Models.Modules.Admin.Message.MessageModel
+
+@{
+    ViewBag.Title = Resources.SiteMapLocalizations.SendNewMessage;
+    ViewBag.modalID = Guid.NewGuid().ToString();
+    Layout = "~/Areas/Admin/Views/Shared/_ModalLayout.cshtml";
+}
+<div id="alertsContainer">
+    @Html.Partial("~/Areas/Admin/Views/Shared/_Alerts.cshtml", Model)
+</div>
+
+@if (!Model.HasErrorByType(LMYFrameWorkMVC.Common.LookUps.ErrorType.Critical) && !Model.HasSuccess(LMYFrameWorkMVC.Common.LookUps.SuccessType.Full))
+{  <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light bordered">
+                <div class="portlet-body">
+                    @using (Html.BeginForm(null, null, new { }, FormMethod.Post, new { data_ajaxSubmit = "true", id = "newMessageForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.ID)
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.RoleID, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(model => model.RoleID, Model.Roles, htmlAttributes: new { @class = "form-control select2" })
+
+                                    @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ToUserID, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(model => model.ToUserID, Model.ToUsersListItems, htmlAttributes: new { @class = "select2 form-control", @data_Users = LMYFrameWorkMVC.Web.CommonCode.Utilities.EncodeJson(Model.ToUsersListModel) })
+
+                                    @Html.ValidationMessageFor(model => model.ToUserID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MessageText, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(model => model.MessageText, htmlAttributes: new { @class = "form-control", })
+
+                                    @Html.ValidationMessageFor(model => model.MessageText, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="col-md-12">
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resources.Close</button>
+                                        <input type="submit" value="@Resources.Resources.Send" class="btn btn-info" />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        jQuery(function ($) {
+
+            var newMessageSelect2Wrapper = new LMYFrameWork.Select2Wrapper();
+
+            // var select2Wrapper;
+            function initRoleChangeEvent() {
+                $('#@Html.IdFor(model => model.RoleID)', '#newMessageForm').change(function () {
+                    var selectedRole = this.value;
+                    var toUsersElement = $('#@Html.IdFor(model => model.ToUserID)', '#newMessageForm');
+                    var users = LMYFrameWork.JSONHelper.parseJSON(toUsersElement.attr('data-Users'));
+
+                    toUsersElement.empty();
+                    for (i = 0; i < users.length; i++) {
+                        if (users[i].RolesIDs.indexOf(selectedRole) > -1) {
+                            toUsersElement.append('<option value="' + users[i].Id + '">' + users[i].Name + '</option>');
+                        }
+                    }
+
+                    newMessageSelect2Wrapper.initSelect2(
+                        $('#@Html.IdFor(model => model.ToUserID)'),
+                        {
+                            container: '#newMessageForm'
+                        }
+                    );
+
+                    //LMYFrameWork.Select2Wrapper.initSelect2(toUsersElement);
+                }).change();
+            }
+
+            initRoleChangeEvent();
+        });
+    </script>
+}
+else
+{
+    <div class="col-md-12">
+        <div class="pull-right" data-successjson='@Html.Raw(Json.Encode(Model))' data-hassuccess="@Json.Encode(@Model.HasSuccess(LMYFrameWorkMVC.Common.LookUps.SuccessType.Full))" data-hidemodal="true">
+            <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resources.Close</button>
+        </div>
+    </div>
+
+}
+

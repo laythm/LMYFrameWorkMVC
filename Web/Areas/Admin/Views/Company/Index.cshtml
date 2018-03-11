@@ -1,0 +1,113 @@
+﻿@model LMYFrameWorkMVC.Common.Models.Modules.Admin.Administration.Company.CompanyModel
+@using LMYFrameWorkMVC.Web.CommonCode
+@{
+    ViewBag.Title = Resources.SiteMapLocalizations.CompaniesList;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div id="alertsContainer">
+    @Html.Partial("~/Areas/Admin/Views/Shared/_Alerts.cshtml", Model)
+</div>
+
+<div class="col-md-12" id="container">
+
+    <div class="portlet light bordered">
+        <div class="portlet-title">
+            <div class="caption font-dark">
+
+                <span class="caption-subject bold uppercase">@Resources.SiteMapLocalizations.CompaniesList</span>
+            </div>
+
+            <div>
+                <div class="btn-group pull-right" id="tools">
+                    @if (User.HasAccessToNode(Url.Action("CompaniesList-Create", "Company")))
+                    {
+                        <a class="dt-button btn blue btn-outline modalSuccess" href="@Url.Action("CompaniesList-Create", "Company")" data-modal='' data-modalContainer='#container' data-alertsContainer='#alertsContainer'>@Resources.Resources.Create</a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <table class="table table-striped table-bordered table-hover table-checkable order-column dt-responsive" width="100%" id="dynamic-table">
+                <thead>
+                    <tr>
+                        <th width="90&">@Html.DisplayNameFor(model => model.Name) </th>
+                        <th width="10%">@Resources.Resources.Actions</th>
+                    </tr>
+                </thead>
+
+            </table>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //initiate dataTables plugin
+        var dataTableWrapper = new LMYFrameWork.DataTableWrapper();
+
+        dataTableWrapper.initServerSide({
+            buttonsContainer: "#tools",
+            container: "#container",
+            alertsContainer: "#alertsContainer",
+            url: '@Url.Action("GetCompanies", "Company")',
+            table: '#dynamic-table',
+            //for custom search parameters
+            data: function (d) {
+                return $.extend({}, d, {
+                    "CustomSearchObject": null
+                });
+            },
+            renderComplete: function () {
+                $('.modalSuccess').on('success', function () {
+                    dataTableWrapper.refreshTable('#dynamic-table');
+                });
+            },
+            order: [[0, 'asc']],
+            columns:
+               [
+                {
+                    "data": "Name",
+                    "render": function (data, type, row) {
+                        @if (User.HasAccessToNode(Url.Action("View", "Company")))
+                        {
+                            <text>
+                        var anchor = $("<a   data-toggle='tooltip' data-modal='' data-modalContainer='#container' data-alertsContainer='#alertsContainer'> </a>")
+                        anchor.html(data);
+                        anchor.attr("href", "@Url.Action("View", "Company")/" + row.Id);
+                        return anchor[0].outerHTML;
+
+                        </text>
+                        }
+
+                        return data;
+                    }
+                },
+                {
+                    "data": "Id",
+                    exportable: false,
+                    sortable: false,
+                    "render": function (data, type, row) {
+
+                        var edit = '', deleteurl = '';
+                        @if (User.HasAccessToNode(Url.Action("Edit", "Company")))
+                        {
+                          <text>
+                        edit = "<a  class='modalSuccess' href='@Url.Action("Edit", "Company")/" + data + "' data-toggle='tooltip' title ='@Resources.Resources.Edit' data-modal='' data-modalContainer='#container' data-alertsContainer='#alertsContainer'><i class='fa fa-edit btn btn-xs green' ></i></a>"
+                        </text>
+                        }
+
+                        @if (User.HasAccessToNode(Url.Action("Delete", "Company")))
+                        {
+                            <text>
+                        deleteurl = "<a class='modalSuccess'  href='@Url.Action("Delete","Company")/" + data + "' data-modal='' data-modalContainer='#container' data-alertsContainer='#alertsContainer'  data-toggle='tooltip' title ='@Resources.Resources.Delete'><i class='fa fa-close btn btn-xs red' ></i></a>";
+                        </text>
+                        }
+
+                        return "<div class='btn-group'>" + edit + deleteurl + "</div>";
+                    },
+                }
+               ],
+        }
+    );
+    });
+</script>
