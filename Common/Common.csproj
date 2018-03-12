@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AD7951DE-E7E4-4BC1-AF88-04909BDE0CA9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LMYFrameWorkMVC.Common</RootNamespace>
+    <AssemblyName>LMYFrameWorkMVC.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9.4\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Caching.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Interception.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Interception.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Interception.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\AllowedFileTypesAttribute.cs" />
+    <Compile Include="Attributes\DateAttribute.cs" />
+    <Compile Include="Attributes\MaxFileSizeAttribute.cs" />
+    <Compile Include="Attributes\PastDateValidation.cs" />
+    <Compile Include="Attributes\Trim.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="DAL\AspNetRole.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\AspNetRoleSiteMapNode.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\AspNetUser.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\AspNetUserClaim.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\AspNetUserLogin.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\AspNetUser_Connections.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\Company.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\CustomContext.cs" />
+    <Compile Include="DAL\DataModelEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataModelEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\DataModelEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\DataModelEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataModelEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\DBAudit.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\Driver.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\ELMAH_Error.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\Interfaces.cs" />
+    <Compile Include="DAL\Message.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\OverRides\Moduels\Administration\AspNetRole.cs" />
+    <Compile Include="DAL\OverRides\Moduels\Administration\AspNetUser.cs" />
+    <Compile Include="DAL\OverRides\Moduels\Administration\AspNetUser_Connections.cs" />
+    <Compile Include="DAL\OverRides\Moduels\Administration\Company.cs" />
+    <Compile Include="DAL\OverRides\Moduels\Administration\Driver.cs" />
+    <Compile Include="DAL\OverRides\Moduels\Truck\TruckLoad.cs" />
+    <Compile Include="DAL\OverRides\Moduels\Administration\Setting.cs" />
+    <Compile Include="DAL\OverRides\Moduels\Truck\Truck.cs" />
+    <Compile Include="DAL\OverRides\Moduels\Truck\TruckExpens.cs" />
+    <Compile Include="DAL\OverRides\Moduels\Administration\USAState.cs" />
+    <Compile Include="DAL\OverRides\Moduels\Message\Message.cs" />
+    <Compile Include="DAL\Setting.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\SettingsFile.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\SettingsType.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\SoftDeleteInterceptor.cs" />
+    <Compile Include="DAL\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\sp_helpdiagrams_Result.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\Truck.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\TruckExpens.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\TruckExpensType.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\TruckLoad.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\TruckLoadStatus.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\USAState.cs">
+      <DependentUpon>DataModelEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CacheKey.cs" />
+    <Compile Include="Entities\ITemplate.cs" />
+    <Compile Include="Entities\EmailInfo.cs" />
+    <Compile Include="Entities\IError.cs" />
+    <Compile Include="Entities\ContextInfo.cs" />
+    <Compile Include="Entities\Notification.cs" />
+    <Compile Include="Extensions\DateExtensions.cs" />
+    <Compile Include="Extensions\CommonExtensions.cs" />
+    <Compile Include="Helpers\CacheHelper.cs" />
+    <Compile Include="Helpers\EmailHelper.cs" />
+    <Compile Include="Helpers\FileHelper.cs" />
+    <Compile Include="Helpers\Hasher.cs" />
+    <Compile Include="Helpers\ServiceHelper.cs" />
+    <Compile Include="Helpers\Utilites.cs" />
+    <Compile Include="LookUps.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Modules\Admin\Administration\Company\CompanyModel.cs" />
+    <Compile Include="Models\Modules\Admin\Administration\Driver\DriverModel.cs" />
+    <Compile Include="Models\Modules\Admin\Administration\Role\SiteMapModel.cs" />
+    <Compile Include="Models\Modules\Admin\Administration\Role\RoleModel.cs" />
+    <Compile Include="Models\Modules\Admin\Administration\Setting\SettingModel.cs" />
+    <Compile Include="Models\Modules\Admin\Administration\USAState\USAStateModel.cs" />
+    <Compile Include="Models\Modules\Admin\Administration\User\AspNetUserConnectionModel.cs" />
+    <Compile Include="Models\Modules\Admin\Message\MessageModel.cs" />
+    <Compile Include="Models\Common\Select2Parameters.cs" />
+    <Compile Include="Models\Common\GenericListModel.cs" />
+    <Compile Include="Models\Common\BaseModel.cs" />
+    <Compile Include="Models\Common\DataTableSearchParameters.cs" />
+    <Compile Include="Models\Modules\Admin\Administration\User\ChangePasswordModel.cs" />
+    <Compile Include="Models\Modules\Admin\Administration\User\UserModel.cs" />
+    <Compile Include="Models\Modules\Admin\Truck\Load\TruckLoadSearchModel.cs" />
+    <Compile Include="Models\Modules\Admin\Truck\Load\TruckLoadModel.cs" />
+    <Compile Include="Models\Modules\Admin\Truck\Load\StatusModel.cs" />
+    <Compile Include="Models\Modules\Admin\Truck\Lookups.cs" />
+    <Compile Include="Models\Modules\Admin\Truck\TruckExpense\ExpenseTypeModel.cs" />
+    <Compile Include="Models\Modules\Admin\Truck\TruckExpense\TruckExpenseModel.cs" />
+    <Compile Include="Models\Modules\Admin\Truck\TruckExpense\TruckLoadSearchModel.cs" />
+    <Compile Include="Models\Modules\Admin\Truck\TruckModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateLists\Regestration.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="DAL\Backups\05012017.rar" />
+    <None Include="DAL\Backups\08022017.rar" />
+    <None Include="DAL\Backups\bak 14 05 2017.bak" />
+    <None Include="DAL\Backups\bak 14 05 2017.rar" />
+    <EntityDeploy Include="DAL\DataModelEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DataModelEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DAL\DataModelEntities.edmx.diagram">
+      <DependentUpon>DataModelEntities.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Resources.ar.resx" />
+    <EmbeddedResource Include="Resources\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="DAL\Backups\script 20 10 2017.txt" />
+    <Content Include="DAL\DataModelEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DataModelEntities.Context.cs</LastGenOutput>
+      <DependentUpon>DataModelEntities.edmx</DependentUpon>
+    </Content>
+    <Content Include="DAL\DataModelEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DataModelEntities.edmx</DependentUpon>
+      <LastGenOutput>DataModelEntities.cs</LastGenOutput>
+    </Content>
+    <Content Include="DAL\scripts\Delete Scriprt.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

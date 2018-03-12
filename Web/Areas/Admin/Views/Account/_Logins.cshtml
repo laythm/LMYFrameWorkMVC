@@ -1,0 +1,12 @@
+﻿@model List<LMYFrameWorkMVC.Common.Models.LoginViewModel>
+@foreach (var option in Model)
+{
+    @Html.TextBoxFor(m => option.Name)
+    @Html.ValidationMessageFor(model => option.Name, "", new { @class = "text-danger" })
+
+    @Html.TextBoxFor(m => option.Password)
+    @Html.ValidationMessageFor(model => option.Password, "", new { @class = "text-danger" })
+
+    @Html.TextBoxFor(m => option.UserName)
+    @Html.ValidationMessageFor(model => option.UserName, "", new { @class = "text-danger" })
+}

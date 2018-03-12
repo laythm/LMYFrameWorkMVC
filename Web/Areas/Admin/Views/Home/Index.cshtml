@@ -1,0 +1,12 @@
+﻿ @model LMYFrameWorkMVC.Common.Models.Common.BaseModel
+@{
+    ViewBag.Title = Resources.Resources.Home;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div id="alertsContainer">
+    @Html.Partial("~/Areas/Admin/Views/Shared/_Alerts.cshtml", Model)
+</div>
+
+ <div class="note note-info">
+    <p> @Resources.Resources.Welcome</p>
+</div>

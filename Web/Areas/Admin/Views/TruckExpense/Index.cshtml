@@ -1,0 +1,211 @@
+﻿@model LMYFrameWorkMVC.Common.Models.Modules.Admin.Truck.TruckExpense.TruckExpenseSearchModel
+@using LMYFrameWorkMVC.Web.CommonCode
+@{
+    ViewBag.Title = Resources.SiteMapLocalizations.TruckExpensesList;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    LMYFrameWorkMVC.Common.Models.Modules.Admin.Truck.TruckExpense.TruckExpenseModel truckExpenseModel = new LMYFrameWorkMVC.Common.Models.Modules.Admin.Truck.TruckExpense.TruckExpenseModel();
+}
+<div id="alertsContainer">
+    @Html.Partial("~/Areas/Admin/Views/Shared/_Alerts.cshtml", Model)
+</div>
+
+
+<div class="col-md-12" id="container">
+
+    <div class="portlet light bordered">
+        <div class="portlet-title">
+            <div class="caption font-dark">
+
+                <span class="caption-subject bold uppercase">@Resources.SiteMapLocalizations.TruckExpensesList</span>
+            </div>
+
+            <div>
+                <div class="btn-group pull-right" id="tools">
+                    @if (User.HasAccessToNode(Url.Action("TruckExpensesList-CreateExpense", "TruckExpense")))
+                    {
+                        <a class="dt-button btn blue btn-outline modalSuccess" href="@Url.Action("TruckExpensesList-CreateExpense", "TruckExpense")" data-modal='' data-modalContainer='#container' data-alertsContainer='#alertsContainer'>@Resources.Resources.Create</a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="portlet-body">
+
+            @using (Html.BeginForm(null, null, new { }, FormMethod.Post, new { id = "searchForm", @data_ajaxSubmit = "true" }))
+            {
+                <div class="row form-horizontal">
+                    <div class="form-group">
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.TruckId, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.HiddenFor(model => model.TruckModel.Name, new { @data_disableValidation = "true" })
+                                @Html.DropDownListFor(model => model.TruckId, Enumerable.Empty<SelectListItem>(), " ",
+                            htmlAttributes: new
+                            {
+                                @class = "form-control select2",
+                                @data_url = Url.Action("TruckExpensesList-GetTrucksBySelect2Parameters", "Truck"),
+                                @data_container = "#container",
+                                @data_alertsContainer = "#alertsContainer",
+                                @data_val_prop = "Id",
+                                @data_text_prop = "Name",
+                                @data_selected_text = Model.TruckModel.Name,
+                                @data_selected_val = Model.TruckId,
+                                @data_save_text_in = Html.IdFor(model => model.TruckModel.Name),
+                            })
+
+                                @Html.ValidationMessageFor(model => model.TruckId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.ExpenseTypeId, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.DropDownListFor(model => model.ExpenseTypeId, Model.TruckExpensesTypesList, "", htmlAttributes: new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.ExpenseTypeId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.AtDateString, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.AtDateString, htmlAttributes: new { @class = "form-control datePicker" })
+                                @Html.ValidationMessageFor(model => model.AtDateString, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <div class="col-md-12 text-center">
+                            <input type="button" id="restButton" value="@Resources.Resources.Reset" class="btn btn-info" />
+                            <input type="submit" value="@Resources.Resources.Search" class="btn btn-success" />
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+
+            <div class="">
+                <table class="table table-striped table-bordered table-hover table-checkable order-column dt-responsive" width="100%" id="dynamic-table">
+                    <thead>
+                        <tr>
+                            <th width="15%">@Html.DisplayNameFor(model => truckExpenseModel.TruckId) </th>
+                            <th width="15%">@Html.DisplayNameFor(model => truckExpenseModel.ExpenseTypeId) </th>
+                            <th width="15%">@Html.DisplayNameFor(model => truckExpenseModel.Price) </th>
+                            <th width="15%">@Html.DisplayNameFor(model => truckExpenseModel.AtDate) </th>
+                            <th width="15%">@Resources.Resources.Actions</th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //initiate dataTables plugin
+        var dataTableWrapper = new LMYFrameWork.DataTableWrapper();
+
+        LMYFrameWork.CommonMethods.addFormSubmitEvent('#searchForm', function (e) {
+            e.preventDefault();
+
+            dataTableWrapper.refreshTable('#dynamic-table');
+        });
+
+        $('#restButton').click(function () {
+            $('#@Html.IdFor(m=>m.TruckId)').val('').change();
+            $('#@Html.IdFor(m=>m.ExpenseTypeId)').val('').change();
+            $('#@Html.IdFor(m=>m.AtDateString)').val('').change();
+
+            dataTableWrapper.refreshTable('#dynamic-table');
+        });
+
+        dataTableWrapper.initServerSide({
+            buttonsContainer: "#tools",
+            container: "#container",
+            alertsContainer: "#alertsContainer",
+            url: '@Url.Action("GetTruckExpenses","TruckExpense")',
+            table: '#dynamic-table',
+            //for custom search parameters
+            data: function (d) {
+                return $.extend({}, d, {
+                    "CustomSearchObject": {
+                        TruckId: $('#@Html.IdFor(m=>m.TruckId)').val(),
+                        ExpenseTypeId: $('#@Html.IdFor(m=>m.ExpenseTypeId)').val(),
+                        AtDateString: $('#@Html.IdFor(m=>m.AtDateString)').val(),
+                    }
+                });
+            },
+            renderComplete: function () {
+                $('.modalSuccess').on('success', function () {
+                    dataTableWrapper.refreshTable('#dynamic-table');
+                });
+            },
+            order: [[0, 'asc']],
+            columns:
+               [
+                {
+                    "data": "TruckId",
+                    "render": function (data, type, row) {
+                        @if (User.HasAccessToNode(Url.Action("View", "TruckExpense")))
+                        {
+                            <text>
+                        var anchor = $("<a   data-toggle='tooltip' data-modal='' data-modalContainer='#container' data-alertsContainer='#alertsContainer'> </a>")
+                        anchor.html(row.TruckModel ? row.TruckModel.Name:'');
+                        anchor.attr("href", "@Url.Action("View", "TruckExpense")/" + row.Id);
+                        return anchor[0].outerHTML;
+
+                        </text>
+                        }
+
+                        return data;
+                    }
+                },
+                {
+                    "data": "ExpenseTypeId",
+                    "render": function (data, type, row) {
+                        if (row.ExpenseTypeModel && row.ExpenseTypeModel.Name)
+                            return row.ExpenseTypeModel.Name;
+
+                        return '';
+                    }
+                },
+                { "data": "Price" },
+                { "data": "AtDateString" },
+                {
+                    "data": "Id",
+                    exportable: false,
+                    sortable: false,
+                    "render": function (data, type, row) {
+
+                        var edit = '', deleteurl = '';
+                        @if (User.HasAccessToNode(Url.Action("Edit", "TruckExpense")))
+                        {
+                          <text>
+                        edit = "<a class='modalSuccess' href='@Url.Action("Edit", "TruckExpense")/" + data + "' data-toggle='tooltip' title ='@Resources.Resources.Edit' data-modal='' data-modalContainer='#container' data-alertsContainer='#alertsContainer'><i class='fa fa-edit btn btn-xs green' ></i></a>"
+                        </text>
+                        }
+
+                        @if (User.HasAccessToNode(Url.Action("Delete", "TruckExpense")))
+                        {
+                            <text>
+                        deleteurl = "<a class='modalSuccess'  href='@Url.Action("Delete","TruckExpense")/" + data + "' data-modal='' data-modalContainer='#container' data-alertsContainer='#alertsContainer'  data-toggle='tooltip' title ='@Resources.Resources.Delete'><i class='fa fa-close btn btn-xs red' ></i></a>";
+                        </text>
+                        }
+
+                        return "<div class='btn-group'>" + edit + deleteurl + "</div>";
+                    },
+                }
+               ],
+        }
+    );
+    });
+</script>
