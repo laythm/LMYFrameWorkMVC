@@ -13,4 +13,6 @@
   -many usefull c# helpers.<br> -datatables ajax and exporting tables.<br>
   -rtl support.<br>
   -responsive 100%<br> -localization (arabic, english)</p>
+  -mvc validation attributes such as (file size validation) </p>
+    
   <p>simply use it when you want to start a new project it will help u all alot</p>
